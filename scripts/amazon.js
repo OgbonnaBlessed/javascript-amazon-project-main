@@ -1,4 +1,5 @@
 import { cart } from "../data/cart.js";
+import { products } from "../data/products.js";
 
 let productsHTML = '';
 
@@ -72,14 +73,14 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   let myTimeout2;
 
   if (!addElement.classList.contains('added-message')) {
-    myTimeout = setTimeout(() => {
-      addElement.classList.remove('added-message')
-    }, 1000); 
-
     myTimeout2 = setTimeout(() => {
       addElement.classList.remove('added-message')
-      clearTimeout(myTimeout2)
-    }, 2000);
+    }, 2000); 
+
+    myTimeout = setTimeout(() => {
+      addElement.classList.remove('added-message')
+  
+    }, 1000);
     
     addElement.classList.add('added-message');
 
