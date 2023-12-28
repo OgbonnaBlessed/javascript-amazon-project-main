@@ -1,3 +1,5 @@
+import { cart } from "../data/cart.js";
+
 let productsHTML = '';
 
 products.forEach((product) => {
@@ -21,12 +23,12 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${product.priceCents / 100}
+            $${(product.priceCents / 100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
-            <select class = "js-quantity-selector-${product.id}">
-              <option selected value="1">1</option>
+            <select class = "quantity-selector js-quantity-selector-${product.id}">
+              <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
@@ -41,7 +43,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -63,6 +65,28 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
 
   let selectQuantity = Number(selectElement);
 
+  let addElement = document.querySelector(`.js-added-to-cart-${productId}`);
+
+  let myTimeout;
+
+  let myTimeout2;
+
+  if (!addElement.classList.contains('added-message')) {
+    myTimeout = setTimeout(() => {
+      addElement.classList.remove('added-message')
+    }, 1000); 
+
+    myTimeout2 = setTimeout(() => {
+      addElement.classList.remove('added-message')
+      clearTimeout(myTimeout2)
+    }, 2000);
+    
+    addElement.classList.add('added-message');
+
+  } else {
+    clearTimeout(myTimeout);
+  }
+
   let matchingItem;
 
   cart.forEach((cartItem) => {
@@ -77,11 +101,11 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   } else {
     cart.push({
       productId: productId,
-      quantity: 1
+      quantity: selectQuantity
     })
   }
 
-  let cartQuantity = selectQuantity;
+  let cartQuantity = 0;
 
   cart.forEach((cartItem) => {
     cartQuantity += cartItem.quantity;
