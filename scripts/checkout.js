@@ -1,4 +1,4 @@
-import { cart, removeFromCart, saveToCart, updateNewQuantity } from "../data/cart.js";
+import { cart, removeFromCart, saveToCart, updateNewQuantity, updateDeliveryOption } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
@@ -95,7 +95,8 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
     const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
   html += `
-        <div class="delivery-option">
+        <div class="delivery-option js-delivery-option" data-product-id = "${matchingProduct.id}"
+          data-delivery-option-id = "${deliveryOption.id}">
           <input type="radio"
           ${isChecked ? 'Checked' : ''}
             class="delivery-option-input"
@@ -150,19 +151,39 @@ document.querySelectorAll('.js-update-quantity').forEach((update) => {
 })
 
 document.querySelectorAll('.js-save-quantity').forEach((save) => {
-  save.addEventListener('click', () => {
-    const productId = save.dataset.productId;
-
-    let valueElement = document.querySelector(`.js-quantity-input-${productId}`);
-
-    let valueOfItem = Number(valueElement.value);
-
-    let containerElement = document.querySelector(`.js-cart-item-${productId}`);
-
-    if (containerElement.classList.contains('is-editing-quantity')) {
-      containerElement.classList.remove('is-editing-quantity');
-
-      saveToCart(productId, valueOfItem);
+  save.addEventListener('click', (event) => {
+    if (event.key === 'enter') {
+      saveItems();
     }
   })
 })
+
+function saveItems() {
+  
+    document.querySelectorAll('.js-save-quantity').forEach((save) => {
+    save.addEventListener('click', () => {
+      const productId = save.dataset.productId;
+  
+      let valueElement = document.querySelector(`.js-quantity-input-${productId}`);
+  
+      let valueOfItem = Number(valueElement.value);
+  
+      let containerElement = document.querySelector(`.js-cart-item-${productId}`);
+  
+      if (containerElement.classList.contains('is-editing-quantity')) {
+        containerElement.classList.remove('is-editing-quantity');
+  
+        saveToCart(productId, valueOfItem);
+      }
+    })
+  })
+}
+saveItems();
+
+document.querySelectorAll('.js-delivery-option').forEach((element) => {
+  element.addEventListener('click', () => {
+    const {productId, deliveryOptionId} = element.dataset;
+    console.log(deliveryOptionId);
+    updateDeliveryOption(productId, deliveryOptionId)
+  });
+});
