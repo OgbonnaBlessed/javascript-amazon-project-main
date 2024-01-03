@@ -23,3 +23,13 @@ export function getDeliveryOption(deliveryOptionId) {
 
     return deliveryOption;
 }
+
+export function calculateDeliveryDate(deliveryOption) {
+    const today = dayjs(); 
+    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+    const dateString = deliveryDate.format('dddd, MMMM D');
+
+    const priceString = deliveryOption.priceCents === 0
+    ? 'FREE'
+    : `$${formatCurrency(deliveryOption.priceCents)} -`;
+}
