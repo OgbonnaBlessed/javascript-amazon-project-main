@@ -22,7 +22,6 @@ export function saveToStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-
 export function addToCart(productId, selectQuantity) {
   
   let matchingItem;
@@ -39,7 +38,7 @@ export function addToCart(productId, selectQuantity) {
   } else {
     cart.push({
       productId: productId,
-      quantity: selectQuantity,
+      quantity: selectQuantity ,
       deliveryOptionId: '1'
     })
   }
