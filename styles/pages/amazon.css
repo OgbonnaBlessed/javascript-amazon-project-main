@@ -15,6 +15,14 @@
        repeat(...) is a special property that works with
        display: grid; */
   grid-template-columns: repeat(8, 1fr);
+  padding-top: 30px;
+}
+
+.product-container {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  border: 2px solid black;
+  border-radius: 10px;
 }
 
 /* @media is used to create responsive design (making the
